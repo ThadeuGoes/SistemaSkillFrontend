@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '90%',
         marginTop: 20,
-        marginBottom:10,
+        marginBottom: 10,
     },
     lista: {
         flexDirection: 'column',
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
         padding: 5,
     },
     par: {
-        backgroundColor: '#ddd'
+        backgroundColor: '#dddddd99'
     },
     impar: {
         backgroundColor: ''
@@ -60,5 +60,15 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    botaoDelet: {
+        backgroundColor: '#dd5454',
+        marginBottom: 20,
+        marginTop: 25,
+        width: 70,
+        height: 30,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 
 })

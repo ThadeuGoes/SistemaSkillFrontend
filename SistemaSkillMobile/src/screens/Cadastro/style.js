@@ -61,5 +61,16 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         elevation: 7,
+    },
+    login:{
+        marginTop: '10%',
+        left: '30%',
+        backgroundColor: '#0F8B82',
+        width: '30%',
+        height: 30,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 7,
     }
 })

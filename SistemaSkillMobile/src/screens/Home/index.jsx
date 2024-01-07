@@ -13,9 +13,22 @@ const Home = ({ navigation }) => {
   const [options, setOptions] = useState([]);
   const [nivel, setNivel] = useState("");
   const [opcao, setOpcao] = useState('');
+  const [filtro, setFiltro] = useState([]);
+
   //modal1
   const [visible, setVisible] = React.useState(false);
-  const showModal = () => setVisible(true);
+  const showModal = () => {
+    setVisible(true);
+    console.log(lista);
+    setFiltro(options.filter((skill) => {
+      for (let i = 0; i < lista.length; i++) {
+        if (skill.nome == lista[i].skills.nome) {
+          return false;
+        }
+      }
+      return true;
+    }))
+  }
   const hideModal = () => setVisible(false);
   const containerStyle = { backgroundColor: 'white', padding: 20 };
   //modal2
@@ -30,29 +43,22 @@ const Home = ({ navigation }) => {
   const pegarskills = async () => {
     await service.get("/skill/listar")
       .then((resposta) => {
-        console.log(resposta.data);
         setOptions(resposta.data)
       })
   }
   useEffect(() => {
     pegarskills()
-    console.log(AsyncStorage.getItem('id'));
   }, [adicionar])
 
   const listaSkill = async () => {
-    // console.log(await (AsyncStorage.getItem('infoUser')));
     let user = await (AsyncStorage.getItem('infoUser'))
     user = JSON.parse(user);
-    console.log(user.id);
     service.get(`/usuario/listaSkill/${user.id}`)
       .then((response) => {
-        console.log('deu certo');
-        console.log(response.data);
         setLista(response.data)
 
       })
       .catch(() => {
-        console.log('deu errado');
       })
   }
   useEffect(() => {
@@ -60,51 +66,44 @@ const Home = ({ navigation }) => {
   }, [adicionar])
 
   const adicionar = async () => {
-    console.log(nivel);
-    console.log(opcao);
     let user = await (AsyncStorage.getItem('infoUser'))
     user = JSON.parse(user);
-    console.log(user.id);
     service.post("/skill/associar", {}, { params: { idSkill: opcao, idUsuario: user.id, nivel: nivel } })
       .then(() => {
-        console.log('deu certo');
         hideModal()
         listaSkill()
+        setNivel(null)
+        setOpcao(null)
       }).catch(() => {
-        console.log('deu ruim');
       })
   }
 
   const deleta = () => {
 
-    console.log(opcao);
     service.delete(`/skill/deletar/${opcao}`)
       .then(() => {
-        console.log('deu certo');
         hideModal2()
         listaSkill()
+        setOpcao(null)
       }).catch(() => {
-        console.log('deu ruim');
       })
   }
 
   const editar = () => {
-    console.log(nivel);
-    console.log(opcao);
     service.patch(`/skill/atualizar/${opcao}`, {}, { params: { nivel: nivel } })
       .then(() => {
-        console.log('deu certo');
         hideModal3()
         listaSkill()
+        setNivel(null)
+        setOpcao(null)
       }).catch(() => {
-        console.log('deu ruim');
       })
   }
 
   return (
     <View style={styles.tela}>
-      <View style={{ backgroundColor: '#22B3B2', width: '100%', height:"8%" }}>
-        <Image  style={{height:55, width: 55}} source={require( '../../../assets/Logo-Neki.png')}/>
+      <View style={{ backgroundColor: '#22B3B2', width: '100%', height: "8%" }}>
+        <Image style={{ height: 55, width: 55 }} source={require('../../../assets/Logo-Neki.png')} />
         <TouchableOpacity style={styles.logout} TouchableOpacity onPress={() => { signOut() }}>
           <Text style={{
             fontWeight: '500', textShadowColor: '#fff',
@@ -114,7 +113,7 @@ const Home = ({ navigation }) => {
         </TouchableOpacity >
       </View>
       {lista.length !== 0 ? <>
-        <Text style={{ marginTop: 30, fontSize:18 }}>Skills</Text>
+        <Text style={{ marginTop: 30, fontSize: 18 }}>Skills</Text>
         <View style={styles.listaTopo}>
           <Text style={{ flex: 1, textAlign: 'center' }}>Imagem</Text>
           <Text style={{ flex: 1, textAlign: 'center' }}>Nome</Text>
@@ -132,7 +131,7 @@ const Home = ({ navigation }) => {
               <Image style={{ flex: 1 }} width={50} height={50} resizeMode='contain' source={{ uri: item.skills.imagem }} alt={item.nome} />
               <Text style={{ flex: 1, textAlign: 'center' }}>{item.skills.nome}</Text>
               <Text style={{ flex: 1, textAlign: 'center' }}>{item.nivel}</Text>
-              <Text style={{ flex: 1, textAlign: 'center',fontSize:12 }}>{item.skills.descricao}</Text>
+              <Text style={{ flex: 1, textAlign: 'center', fontSize: 12 }}>{item.skills.descricao}</Text>
             </View>}
         /></> :
         <View style={{ marginTop: "70%" }}>
@@ -168,88 +167,95 @@ const Home = ({ navigation }) => {
 
       <Portal>
         <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-          <Text>adicionar skill</Text>
+          <Text>Adicionar skill</Text>
           <List.Section title="">
             <List.Accordion
-              title="adicione sua skill"
+              title="Adicione sua skill"
               left={props => <List.Icon {...props} icon="folder" />}>
-              {options.map((skill) =>
+
+              {filtro.map((skill) =>
                 <TouchableOpacity onPress={() => setOpcao(skill.id)}>
-                  <List.Item title={skill.nome} />
+                  <List.Item title={skill.nome} style={{backgroundColor:opcao===skill.id?"#22B3B22c":'white'}} />
                 </TouchableOpacity>)}
 
             </List.Accordion>
             <List.Accordion
-              title="adicione seu level"
+              title="Adicione seu level"
               left={props => <List.Icon {...props} icon="folder" />}>
               <TouchableOpacity onPress={() => setNivel('Alto')}>
-                <List.Item title='Alto' />
+                <List.Item title='Alto'style={{backgroundColor:nivel==='Alto'? '#22B3B22c':'white'}} />
               </TouchableOpacity >
               <TouchableOpacity onPress={() => setNivel('Médio')}>
-                <List.Item title='Médio' />
+                <List.Item title='Médio' style={{backgroundColor:nivel==='Médio'? '#22B3B22c':'white'}}/>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setNivel('Baixo')}>
-                <List.Item title='Baixo' />
+                <List.Item title='Baixo' style={{backgroundColor:nivel==='Baixo'? '#22B3B22c':'white'}}/>
               </TouchableOpacity>
 
             </List.Accordion>
           </List.Section>
-          <TouchableOpacity style={styles.botao} onPress={adicionar}>
-            <Text>adicionar</Text>
-          </TouchableOpacity>
+          <View style={{flexDirection:'row',gap:20}}>
+            <TouchableOpacity style={styles.botao} onPress={adicionar}>
+              <Text>Adicionar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.botao} onPress={hideModal}>
+              <Text>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+
         </Modal>
       </Portal>
 
       <Portal>
         <Modal visible={visible2} onDismiss={hideModal2} contentContainerStyle={containerStyle}>
-          <Text>excluir</Text>
+          <Text>Excluir</Text>
           <List.Section title="">
             <List.Accordion
-              title="exclua sua skill"
+              title="Exclua sua skill"
               left={props => <List.Icon {...props} icon="folder" />}>
               {lista.map((skill) =>
                 <TouchableOpacity onPress={() => setOpcao(skill.id)}>
-                  <List.Item title={skill.skills.nome} />
+                  <List.Item title={skill.skills.nome} style={{backgroundColor:opcao===skill.id?"#ff040441":'white'}}/>
                 </TouchableOpacity>)}
 
             </List.Accordion>
           </List.Section>
-          <TouchableOpacity style={styles.botao} onPress={deleta}>
-            <Text>excluir</Text>
+          <TouchableOpacity style={styles.botaoDelet} onPress={deleta}>
+            <Text>Excluir</Text>
           </TouchableOpacity>
         </Modal>
       </Portal>
 
       <Portal>
         <Modal visible={visible3} onDismiss={hideModal3} contentContainerStyle={containerStyle}>
-          <Text>editar</Text>
+          <Text>Editar</Text>
           <List.Section title="">
             <List.Accordion
-              title="edite sua skill"
+              title="Edite sua skill"
               left={props => <List.Icon {...props} icon="folder" />}>
               {lista.map((skill) =>
                 <TouchableOpacity onPress={() => setOpcao(skill.id)}>
-                  <List.Item title={skill.skills.nome} />
+                  <List.Item title={skill.skills.nome} style={{backgroundColor:opcao===skill.id?"#22B3B22c":'white'}}/>
                 </TouchableOpacity>)}
             </List.Accordion>
             <List.Accordion
-              title="edite seu level"
+              title="Edite seu level"
               left={props => <List.Icon {...props} icon="folder" />}>
               <TouchableOpacity onPress={() => setNivel('Alto')}>
-                <List.Item title='Alto' />
+                <List.Item title='Alto' style={{backgroundColor:nivel==='Alto'? '#22B3B22c':'white'}}/>
               </TouchableOpacity >
               <TouchableOpacity onPress={() => setNivel('Médio')}>
-                <List.Item title='Médio' />
+                <List.Item title='Médio'style={{backgroundColor:nivel==='Médio'? '#22B3B22c':'white'}} />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setNivel('Baixo')}>
-                <List.Item title='Baixo' />
+                <List.Item title='Baixo'style={{backgroundColor:nivel==='Baixo'? '#22B3B22c':'white'}} />
               </TouchableOpacity>
 
             </List.Accordion>
 
           </List.Section>
           <TouchableOpacity style={styles.botao} onPress={editar}>
-            <Text>editar</Text>
+            <Text>Editar</Text>
           </TouchableOpacity>
         </Modal>
       </Portal>

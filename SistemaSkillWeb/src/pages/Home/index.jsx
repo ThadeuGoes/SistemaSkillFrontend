@@ -20,9 +20,23 @@ function Home() {
   const [novaSkills, setNovaSkills] = useState("");
   const [opcao, setOpcao] = useState("");
   const [nivel, setNivel] = useState("");
+  const [filtro, setFiltro] = useState([]);
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
+  const handleShow = () => {
+    setShow(true)
+    setFiltro(options.filter((skill) => {
+      for (let i = 0; i < lista.length; i++) {
+        if (skill.label == lista[i].skills.nome) {
+        return false;
+        }
+      }
+      return true;
+    }))
+  };
+
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
@@ -48,7 +62,6 @@ function Home() {
   }
   useEffect(() => {
     pegarskills()
-    console.log(sessionStorage.getItem('id'));
   }, [])
 
   const listaSkill = () => {
@@ -73,6 +86,7 @@ function Home() {
       .then(() => {
         console.log('deu certo');
         navi('/')
+
       }).catch(() => {
         console.log('deu ruim');
       })
@@ -105,6 +119,7 @@ function Home() {
       <HeaderWeb />
       <div className='paginaHo'>
         <button className='logout' onClick={logout}>Logout<CiLogout /></button>
+        {lista.length>=1?<>
         <Table style={{ textAlign: 'center', border: '1px solid black' }} striped bordered hover size='sm' >
           <thead >
             <tr >
@@ -130,14 +145,15 @@ function Home() {
           </tbody>
         </Table>
         <p>Adicione outra skill</p>
+        </>:<><p>Adicione uma skill</p></>}
 
         <button className='botaoSkillHo' onClick={handleShow}>Adicionar</button>
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Body>
             Escolha a skill e o seu nível nela
-            <Select onChange={setOpcao} options={options} />
-            <Select onChange={setNivel} options={
+            <Select placeholder='Selecionar' onChange={setOpcao} options={filtro} />
+            <Select placeholder='Selecionar' onChange={setNivel} options={
               [
                 {
                   value: 'Alto',
@@ -156,10 +172,10 @@ function Home() {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Close
+              Cancelar
             </Button>
             <Button variant="primary" onClick={addSkill}>
-              Save Changes
+              Cadasrar
             </Button>
           </Modal.Footer>
         </Modal>
@@ -167,7 +183,7 @@ function Home() {
         <Modal show={show2} onHide={handleClose2}>
           <Modal.Body>
             Altere seu nivel
-            <Select onChange={setNivel2} options={
+            <Select placeholder='Selecionar' onChange={setNivel2} options={
               [
                 {
                   value: 'Alto',
@@ -186,10 +202,10 @@ function Home() {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose2}>
-              Close
+              Cancelar
             </Button>
             <Button variant="primary" onClick={alterar}>
-              Save Changes
+              Altera
             </Button>
           </Modal.Footer>
         </Modal>

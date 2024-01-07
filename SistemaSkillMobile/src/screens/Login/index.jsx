@@ -42,10 +42,9 @@ const Login = ({ navigation }) => {
       .then(async (response) => {
         console.log('deu certo');
         // console.log(response.data);
-        if (guardar) {
+        // if (guardar) {
           await AsyncStorage.setItem('infoUser', JSON.stringify(response.data));
-        }
-        await AsyncStorage.setItem('infoUser', JSON.stringify(response.data));
+        // }
         signIn(response.data);
       }).catch(() => {
         console.log('deu errado');
@@ -57,17 +56,17 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.tela}>
+      <Text>Login</Text>
       <View style={styles.card}>
-
         <View style={styles.loginLo}>
-          <Text>Login</Text>
-          <TextInput style={styles.inputLo} keyboardType='email-address' value={login} onChangeText={setLogin} />
+          <Text>Email</Text>
+          <TextInput placeholder='Email' style={styles.inputLo} keyboardType='email-address' value={login} onChangeText={setLogin} />
         </View>
 
         <View style={styles.senhaLo}>
           <Text>Senha</Text>
           <View style={{ flexDirection: 'row' }}>
-            <TextInput style={styles.inputLo} secureTextEntry={!ver} value={senha} onChangeText={setSenha} />
+            <TextInput placeholder='Senha' style={styles.inputLo} secureTextEntry={!ver} value={senha} onChangeText={setSenha} />
             <TouchableOpacity style={{ position: 'absolute', right: 2, top: 3 }} onPress={verSenha}>
               <Text >{ver ? <Entypo name="eye-with-line" size={24} color="black" /> : <Entypo name="eye" size={24} color="black" />}</Text>
             </TouchableOpacity>
@@ -78,15 +77,15 @@ const Login = ({ navigation }) => {
           {guardar ?
             <MaterialCommunityIcons name="checkbox-outline" size={24} color="black" />
             : <MaterialCommunityIcons name="checkbox-blank-outline" size={24} color="black" />}
-          <Text>guardar senha</Text>
+          <Text>Guardar senha</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.entrar} onPress={logar}>
-          <Text>entrar</Text>
+          <Text>Entrar</Text>
         </TouchableOpacity>
 
         < TouchableOpacity style={styles.cadastro} onPress={() => navigation.navigate('Cadastro')}>
-          <Text>cadastrar-se</Text>
+          <Text>Cadastrar-se</Text>
         </TouchableOpacity>
 
       </View>

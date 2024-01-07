@@ -5,6 +5,8 @@ import { MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import HeaderWeb from '../../components/HeaderWeb';
 import service from '../../service/service';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 function Login() {
@@ -14,6 +16,9 @@ function Login() {
   const [guardar, setGuardar] = useState(false);
   const [senha, setSenha] = useState();
   const [login, setLogin] = useState();
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true)
 
   const funcVerSenha = () => {
     setVerSenha(!verSenha);
@@ -24,51 +29,51 @@ function Login() {
     console.log(guardar);
   }
 
-  useEffect(()=>{
-    if(localStorage.getItem("guarda")!==null){
+  useEffect(() => {
+    if (localStorage.getItem("guarda") !== null) {
       setGuardar(localStorage.getItem("guarda"));
       console.log(guardar);
     }
-  },[])
+  }, [])
 
   const fazerlogin = async () => {
     const log = {
       email: login,
       password: senha
     }
-    await service.post("/usuario/login",log)
-    .then((resposta) => {
-      console.log("deu certo");
-      console.log(resposta.data);
-      sessionStorage.setItem("token",resposta.data.token.jwtToken);
-      sessionStorage.setItem("id",resposta.data.id);
-      if(guardar){
-        localStorage.setItem("token",resposta.data.token.jwtToken);
-        localStorage.setItem("id",resposta.data.id);
+    await service.post("/usuario/login", log)
+      .then((resposta) => {
+        console.log("deu certo");
+        console.log(resposta.data);
+        sessionStorage.setItem("token", resposta.data.token.jwtToken);
+        sessionStorage.setItem("id", resposta.data.id);
+        if (guardar) {
+          localStorage.setItem("token", resposta.data.token.jwtToken);
+          localStorage.setItem("id", resposta.data.id);
 
-      }else{
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-      }
-      console.log(guardar);
-      localStorage.setItem("guarda",guardar)
-      navi("/Home")
-    }).catch(()=>{
-      console.log("erro");
-      alert("Senha ou login incorretos")
-    })
+        } else {
+          localStorage.removeItem("token");
+          localStorage.removeItem("id");
+        }
+        console.log(guardar);
+        localStorage.setItem("guarda", guardar)
+        navi("/Home")
+      }).catch(() => {
+        console.log("erro");
+        handleShow()
+      })
   }
 
   return (
     <>
       <HeaderWeb />
       <div className='paginaLo'>
-          <p>Login</p>
+        <p>Login</p>
         <div className='cardLogiLo'>
 
           <div className='loginLo'>
-            <p>Login</p>
-            <input placeholder=' Login' className='inputsLo' onChange={(e) => setLogin(e.target.value)} />
+            <p>Email</p>
+            <input placeholder=' Email' className='inputsLo' onChange={(e) => setLogin(e.target.value)} />
           </div>
 
           <div className='senhaLo'>
@@ -88,6 +93,16 @@ function Login() {
           <button className='botaoCadastroLo' onClick={() => navi('/Cadastro')}>Cadastrar-se</button>
         </div>
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body>
+          Email ou senha incorretos
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }

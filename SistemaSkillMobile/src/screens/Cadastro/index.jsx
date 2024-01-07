@@ -21,6 +21,13 @@ const Cadastro = ({ navigation }) => {
   const [visible2, setVisible2] = React.useState(false);
   const onToggleSnackBar2 = () => setVisible2(!visible2);
   const onDismissSnackBar2 = () => setVisible2(false);
+//Snackbar3
+  const [visible3, setVisible3] = React.useState(false);
+  const onToggleSnackBar3 = () => setVisible3(!visible2);
+  const onDismissSnackBar3 = () => {
+    setVisible3(false);
+    navigation.navigate('Login')
+  }
 
   const verSenha = () => {
     setVer(!ver);
@@ -40,7 +47,8 @@ const Cadastro = ({ navigation }) => {
       await service.post("/usuario/cadastro", log)
         .then((resposta) => {
           console.log("deu certo");
-          navigation.navigate('Login')
+          onToggleSnackBar3()
+         
         }).catch(() => {
           console.log("erro");
           onToggleSnackBar2()
@@ -53,17 +61,17 @@ const Cadastro = ({ navigation }) => {
 
   return (
     <View style={styles.tela}>
+      <Text>Cadastro</Text>
       <View style={styles.card}>
-
         <View style={styles.loginLo}>
-          <Text>Login</Text>
-          <TextInput style={styles.inputLo} keyboardType='email-address' onChangeText={setLogin}/>
+          <Text>Email</Text>
+          <TextInput placeholder='Email' style={styles.inputLo} keyboardType='email-address' onChangeText={setLogin}/>
         </View>
 
         <View style={styles.senhaLo}>
           <Text>Senha</Text>
           <View style={{ flexDirection: 'row' }}>
-            <TextInput style={styles.inputLo} secureTextEntry={!ver} onChangeText={setSenha}/>
+            <TextInput placeholder='Senha' style={styles.inputLo} secureTextEntry={!ver} onChangeText={setSenha}/>
             <TouchableOpacity style={{ position: 'absolute', right: 2, top: 3 }} onPress={verSenha}>
               <Text >{ver ? <Entypo name="eye-with-line" size={24} color="black" /> : <Entypo name="eye" size={24} color="black" />}</Text>
             </TouchableOpacity>
@@ -72,7 +80,7 @@ const Cadastro = ({ navigation }) => {
         <View style={styles.senhaLo}>
           <Text>Confirmar senha</Text>
           <View style={{ flexDirection: 'row' }}>
-            <TextInput style={styles.inputLo} secureTextEntry={!ver} onChangeText={setConfirmarSenha}/>
+            <TextInput placeholder='Confirmar email' style={styles.inputLo} secureTextEntry={!ver} onChangeText={setConfirmarSenha}/>
             <TouchableOpacity style={{ position: 'absolute', right: 2, top: 3 }} onPress={verSenha}>
               <Text >{ver ? <Entypo name="eye-with-line" size={24} color="black" /> : <Entypo name="eye" size={24} color="black" />}</Text>
             </TouchableOpacity>
@@ -80,7 +88,11 @@ const Cadastro = ({ navigation }) => {
         </View>
 
         <TouchableOpacity style={styles.entrar} onPress={() =>cadastro() }>
-          <Text>entrar</Text>
+          <Text>Cadastrar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.login} onPress={() =>navigation.navigate('Login')}>
+          <Text>Login</Text>
         </TouchableOpacity>
 
       </View>
@@ -106,6 +118,18 @@ const Cadastro = ({ navigation }) => {
           },
         }}>
         Email já cadastrado!
+      </Snackbar>
+
+      <Snackbar
+        visible={visible3}
+        onDismiss={onDismissSnackBar3}
+        action={{
+          label: 'Ok',
+          onPress: () => {
+            // Do something
+          },
+        }}>
+        Cadastro realizado com sucesso
       </Snackbar>
     </View>
   )

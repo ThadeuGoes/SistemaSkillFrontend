@@ -18,6 +18,13 @@ function Cadastro() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [show2, setShow2] = useState(false);
+  const handleClose2 = () => {
+  setShow2(false);
+  navi('/')
+}
+  const handleShow2 = () => setShow2(true);
+
   const funcVerSenha = () => {
     setVerSenha(!verSenha);
     console.log(senha);
@@ -36,7 +43,7 @@ function Cadastro() {
       await service.post("/usuario/cadastro", log)
         .then((resposta) => {
           console.log("deu certo");
-          navi("/")
+          handleShow2()
         }).catch(() => {
           console.log("erro");
         })
@@ -54,8 +61,8 @@ function Cadastro() {
         <div className='cardLogiCa'>
 
           <div className='loginCa'>
-            <p>Login</p>
-            <input placeholder=' Login' className='inputsCa' onChange={(e) => setLogin(e.target.value)} />
+            <p>Email</p>
+            <input placeholder=' Email' className='inputsCa' onChange={(e) => setLogin(e.target.value)} />
           </div>
 
           <div className='senhaCa'>
@@ -74,14 +81,25 @@ function Cadastro() {
             </div>
           </div>
 
-          <button className='botaoEntrarCa' onClick={fazercadastro}>Cadastrar</button>
+          <button className='botaoCadastrarCa' onClick={fazercadastro}>Cadastrar</button>
+
+          <button className='botaoLoginCa' onClick={() => navi('/')}>Login</button>
         </div>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Body>Senhas diferentes</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={show2} onHide={handleClose2}>
+        <Modal.Body>Cadastro realizado com sucesso</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose2}>
+            Ok
           </Button>
         </Modal.Footer>
       </Modal>
