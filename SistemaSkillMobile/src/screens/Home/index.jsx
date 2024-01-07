@@ -29,16 +29,28 @@ const Home = ({ navigation }) => {
       return true;
     }))
   }
-  const hideModal = () => setVisible(false);
+  const hideModal = () => {
+    setNivel();
+    setOpcao();
+    setVisible(false)
+  };
   const containerStyle = { backgroundColor: 'white', padding: 20 };
   //modal2
   const [visible2, setVisible2] = React.useState(false);
   const showModal2 = () => setVisible2(true);
-  const hideModal2 = () => setVisible2(false);
+  const hideModal2 = () => {
+    setNivel();
+    setOpcao();
+    setVisible2(false)
+  };
   //modal3
   const [visible3, setVisible3] = React.useState(false);
   const showModal3 = () => setVisible3(true);
-  const hideModal3 = () => setVisible3(false);
+  const hideModal3 = () => {
+    setNivel();
+    setOpcao();
+    setVisible3(false)
+  };
 
   const pegarskills = async () => {
     await service.get("/skill/listar")

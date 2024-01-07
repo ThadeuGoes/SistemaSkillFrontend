@@ -23,11 +23,18 @@
     margin-bottom: 20px;
 }
 
+.loginLo p {
+    margin-bottom: 4px;
+}
+
 .senhaLo {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
+}
+.senhaLo p{
+    margin-bottom: -1px;
 }
 
 .inputsLo {
@@ -37,6 +44,7 @@
 
 .inputSenhaLo {
     position: relative;
+    margin-top: 5px;
 }
 
 .botaoVerLo {

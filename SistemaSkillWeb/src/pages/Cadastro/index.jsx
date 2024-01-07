@@ -20,9 +20,9 @@ function Cadastro() {
 
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => {
-  setShow2(false);
-  navi('/')
-}
+    setShow2(false);
+    navi('/')
+  }
   const handleShow2 = () => setShow2(true);
 
   const funcVerSenha = () => {
@@ -30,10 +30,35 @@ function Cadastro() {
     console.log(senha);
   }
 
+  const [show3, setShow3] = useState(false);
+  const handleClose3 = () => setShow3(false);
+  const handleShow3 = () => setShow3(true);
+
+  const [show4, setShow4] = useState(false);
+  const handleClose4 = () => setShow4(false);
+  const handleShow4 = () => setShow4(true);
+
+  const [show5, setShow5] = useState(false);
+  const handleClose5 = () => setShow5(false);
+  const handleShow5 = () => setShow5(true);
+
+  function validateEmail(login) {
+    let res = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return res.test(login);
+  }
+
   const fazercadastro = async () => {
     console.log(login);
     console.log(senha);
     console.log(confirmarSenha);
+    if (login == undefined || senha == undefined || confirmarSenha == undefined || login == '' || senha == '' || confirmarSenha == '') {
+      handleShow4()
+      return;
+    }
+    if (!validateEmail(login)) {
+      handleShow5();
+      return;
+    }
     if (senha === confirmarSenha) {
       console.log("senhas iguais");
       const log = {
@@ -45,6 +70,7 @@ function Cadastro() {
           console.log("deu certo");
           handleShow2()
         }).catch(() => {
+          handleShow3()
           console.log("erro");
         })
 
@@ -87,7 +113,7 @@ function Cadastro() {
         </div>
       </div>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Body>Senhas diferentes</Modal.Body>
+        <Modal.Body>As senhas não coincidem</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Ok
@@ -99,6 +125,33 @@ function Cadastro() {
         <Modal.Body>Cadastro realizado com sucesso</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose2}>
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={show3} onHide={handleClose3}>
+        <Modal.Body>Email já cadastrado</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose3}>
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={show4} onHide={handleClose4}>
+        <Modal.Body>Preencha todos os campos</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose4}>
+            Ok
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={show5} onHide={handleClose5}>
+        <Modal.Body>Email inválido</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose5}>
             Ok
           </Button>
         </Modal.Footer>

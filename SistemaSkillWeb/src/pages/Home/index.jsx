@@ -17,13 +17,17 @@ function Home() {
   const navi = useNavigate();
   const [lista, setLista] = useState([]);
   const [options, setOptions] = useState([])
-  const [novaSkills, setNovaSkills] = useState("");
   const [opcao, setOpcao] = useState("");
   const [nivel, setNivel] = useState("");
   const [filtro, setFiltro] = useState([]);
 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setOpcao();
+    setNivel();
+    setNivel2();
+    setShow(false);
+  }
 
   const handleShow = () => {
     setShow(true)
@@ -38,7 +42,12 @@ function Home() {
   };
 
   const [show2, setShow2] = useState(false);
-  const handleClose2 = () => setShow2(false);
+  const handleClose2 = () => {
+    setOpcao();
+    setNivel();
+    setNivel2();
+    setShow2(false);
+  }
   const handleShow2 = () => setShow2(true);
   const [nivel2, setNivel2] = useState("");
   const [idTroca, setIdTroca] = useState();
@@ -175,7 +184,7 @@ function Home() {
               Cancelar
             </Button>
             <Button variant="primary" onClick={addSkill}>
-              Cadasrar
+              Cadastrar
             </Button>
           </Modal.Footer>
         </Modal>

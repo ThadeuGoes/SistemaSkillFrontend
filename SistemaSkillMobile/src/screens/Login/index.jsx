@@ -43,7 +43,7 @@ const Login = ({ navigation }) => {
         console.log('deu certo');
         // console.log(response.data);
         // if (guardar) {
-          await AsyncStorage.setItem('infoUser', JSON.stringify(response.data));
+        await AsyncStorage.setItem('infoUser', JSON.stringify(response.data));
         // }
         signIn(response.data);
       }).catch(() => {
@@ -67,7 +67,7 @@ const Login = ({ navigation }) => {
           <Text>Senha</Text>
           <View style={{ flexDirection: 'row' }}>
             <TextInput placeholder='Senha' style={styles.inputLo} secureTextEntry={!ver} value={senha} onChangeText={setSenha} />
-            <TouchableOpacity style={{ position: 'absolute', right: 2, top: 3 }} onPress={verSenha}>
+            <TouchableOpacity style={{ position: 'absolute', right: 2, top: 4, padding: 3 }} onPress={verSenha}>
               <Text >{ver ? <Entypo name="eye-with-line" size={24} color="black" /> : <Entypo name="eye" size={24} color="black" />}</Text>
             </TouchableOpacity>
           </View>

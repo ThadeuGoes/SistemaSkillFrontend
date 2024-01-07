@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
     loginLo: {
         marginTop: '20%',
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
     },
     senhaLo: {
         marginTop: '10%',
@@ -34,12 +34,15 @@ export const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: '70%',
         borderRadius: 5,
+        marginTop: 5,
+
     },
     guarda: {
         marginTop: '10%',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'end',
+        alignItems: 'center',
+        gap: 5,
     },
     entrar: {
         backgroundColor: '#0F8B82',
@@ -48,14 +51,13 @@ export const styles = StyleSheet.create({
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '10%',
+        marginTop: '15%',
         elevation: 7,
     },
     cadastro: {
-        marginTop: '10%',
-        left: '30%',
-        backgroundColor: '#0F8B82',
-        width: '30%',
+        marginTop: '5%',
+        backgroundColor: '#107087',
+        width: '60%',
         height: 30,
         borderRadius: 15,
         justifyContent: 'center',
